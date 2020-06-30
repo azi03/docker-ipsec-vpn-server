@@ -1,5 +1,12 @@
 FROM debian:buster-slim
 
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN echo 'Asia/Shanghai' >/etc/timezone
+
+RUN sed -i "s/archive.ubuntu./mirrors.aliyun./g" /etc/apt/sources.list
+RUN sed -i "s/deb.debian.org/mirrors.aliyun.com/g" /etc/apt/sources.list
+RUN sed -i "s/security.debian.org/mirrors.aliyun.com/g" /etc/apt/sources.list
+
 ARG BUILD_DATE
 ARG VERSION
 ARG VCS_REF
@@ -28,7 +35,7 @@ RUN apt-get -yqq update \
          libnss3-tools libevent-dev xl2tpd \
          libnss3-dev libnspr4-dev pkg-config libpam0g-dev \
          libcap-ng-dev libcap-ng-utils libselinux1-dev \
-         libcurl4-nss-dev flex bison gcc make \
+         libcurl4-nss-dev flex bison gcc make vim \
     && wget -t 3 -T 30 -nv -O libreswan.tar.gz "https://github.com/libreswan/libreswan/archive/v${SWAN_VER}.tar.gz" \
     || wget -t 3 -T 30 -nv -O libreswan.tar.gz "https://download.libreswan.org/libreswan-${SWAN_VER}.tar.gz" \
     && tar xzf libreswan.tar.gz \

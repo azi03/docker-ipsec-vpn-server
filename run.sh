@@ -289,9 +289,9 @@ EOF
 fi
 
 # Create VPN credentials
-cat > /etc/ppp/chap-secrets <<EOF
-"$VPN_USER" l2tpd "$VPN_PASSWORD" *
-EOF
+# cat > /etc/ppp/chap-secrets <<EOF
+# "$VPN_USER" l2tpd "$VPN_PASSWORD" *
+# EOF
 
 VPN_PASSWORD_ENC=$(openssl passwd -1 "$VPN_PASSWORD")
 cat > /etc/ipsec.d/passwd <<EOF
@@ -304,9 +304,9 @@ if [ -n "$VPN_ADDL_USERS" ] && [ -n "$VPN_ADDL_PASSWORDS" ]; then
   addl_password=$(printf '%s' "$VPN_ADDL_PASSWORDS" | cut -d ' ' -f 1)
   while [ -n "$addl_user" ] && [ -n "$addl_password" ]; do
     addl_password_enc=$(openssl passwd -1 "$addl_password")
-cat >> /etc/ppp/chap-secrets <<EOF
-"$addl_user" l2tpd "$addl_password" *
-EOF
+# cat >> /etc/ppp/chap-secrets <<EOF
+# "$addl_user" l2tpd "$addl_password" *
+# EOF
 cat >> /etc/ipsec.d/passwd <<EOF
 $addl_user:$addl_password_enc:xauth-psk
 EOF
